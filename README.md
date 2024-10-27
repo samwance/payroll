@@ -28,6 +28,10 @@ This command will create an .env file from .env.template and launch app on the p
 - frontend
 ```http://localhost:8080/```
 
+Accountant login information:
+- phone: ```12345678```
+- password: ```password```
+
 ### Эндпоинты
 ## Payroll
 Создать пользователя
