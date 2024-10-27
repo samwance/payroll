@@ -1,20 +1,25 @@
 <template>
-
   <BaseTemplate>
-  <div class="container">
-    <h2>All Users</h2>
-    <ul class="list-group">
-      <li v-for="user in users" :key="user.id" class="list-group-item">
-        <router-link 
-          :to="user.id === currentUserId 
-            ? { name: 'MyInfo', query: { token: token } } 
-            : { name: 'UserInfo', params: { userId: user.id } }">
-          {{ user.name }} ({{ user.phone }}) 
-          <span v-if="user.id === currentUserId">(you)</span>
-        </router-link>
-      </li>
-    </ul>
-  </div>
+    <div class="container">
+      <h2 class="title">All Users</h2>
+      <ul class="list-group">
+        <li 
+          v-for="user in users" 
+          :key="user.id" 
+          class="list-group-item"
+        >
+          <router-link 
+            :to="user.id === currentUserId 
+              ? { name: 'MyInfo', query: { token: token } } 
+              : { name: 'UserInfo', params: { userId: user.id } }"
+            class="user-link"
+          >
+            {{ user.name }} ({{ user.phone }}) 
+            <span v-if="user.id === currentUserId" class="current-user">(you)</span>
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </BaseTemplate>
 </template>
 

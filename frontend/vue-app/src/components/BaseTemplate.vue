@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div :class="theme" class="full-page">
     <div v-if="isAuthenticated" class="header">
       <button @click="goBack" class="btn btn-secondary return-button">Return Back</button>
       <button @click="logout" class="btn btn-danger logout-button">Logout</button>
+      <button @click="toggleTheme" class="btn btn-info theme-button">Toggle Theme</button>
     </div>
     <slot v-if="isAuthenticated"></slot>
   </div>
@@ -15,10 +16,12 @@ export default {
   data() {
     return {
       isAuthenticated: false,
+      theme: 'light', // Default theme
     };
   },
   created() {
     this.checkAuthentication();
+    this.loadTheme();
   },
   methods: {
     checkAuthentication() {
@@ -29,6 +32,14 @@ export default {
       } else {
         this.isAuthenticated = true; // Set this based on your logic
       }
+    },
+    loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      this.theme = savedTheme;
+    },
+    toggleTheme() {
+      this.theme = this.theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', this.theme);
     },
     redirectToLogin() {
       this.$router.push({ name: 'UserLogin' });
@@ -42,8 +53,6 @@ export default {
           },
         });
         localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('isAdmin');
         this.redirectToLogin(); // Redirect after logout
       } catch (error) {
         console.error('Logout failed:', error);
