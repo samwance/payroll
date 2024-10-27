@@ -21,6 +21,6 @@ async def create_admin_user(db: AsyncSession = Depends(get_db)):
         is_admin=True
     )
     db.add(admin_user)
-    await db.commit()  # Commit the changes
-    await db.refresh(admin_user)  # Refresh to get the updated user instance
+    await db.commit()
+    await db.refresh(admin_user)
     return admin_user
