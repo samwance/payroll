@@ -21,6 +21,17 @@
 - You can launch the app with:
 ```./start.sh  ```
 
+This command will create an .env file from .env.template and launch app on the ports:
+```
+backend
+http://0.0.0.0:8000/
+```
+
+```
+frontend
+http://localhost:8080/
+```
+
 ### Эндпоинты
 ## Payroll
 Создать пользователя
