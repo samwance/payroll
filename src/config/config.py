@@ -35,6 +35,12 @@ class AppSettings(BaseSetting):
             f"{self.EXTERNAL_SERVICE_HOST}"
         )
 
+class EMAILSettings(BaseSetting):
+    EMAIL_SENDER: str
+    EMAIL_PASSWORD: str
+    EMAIL_PORT: int
+
+
 
 class DBSettings(BaseSetting):
     POSTGRES_HOST: str
@@ -58,3 +64,4 @@ class PasswordSettings(BaseSetting):
 app_settings = AppSettings()
 db_settings = DBSettings()
 jwt_settings = JWTSettings()
+email_settings = EMAILSettings()

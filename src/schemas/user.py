@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     name: str
     surname: str
     phone: str
+    email: str
     position: str
     photo: Optional[str] = None
 
@@ -26,7 +27,6 @@ class UserCreateResponse(UserBase):
     registered_at: datetime
     updated_at: datetime
     is_admin: bool
-    random_password: str
     salary: float
 
 class UserFullResponse(UserBase):
@@ -53,6 +53,7 @@ class UserUpdate(BaseModel):
     name: str = None
     surname: str = None
     phone: str = None
+    email: str = None
     password: Optional[str] = None
 
 class UserListResponse(BaseModel):

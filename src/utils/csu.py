@@ -14,9 +14,9 @@ async def create_admin_user(db: AsyncSession = Depends(get_db)):
         second_name='accountant',
         surname='accountant',
         position='accountant',
+        email="admin@admin.com",
         salary=0,
         phone='12345678',
-        random_password='password',
         password=hashed_password,
         is_admin=True
     )

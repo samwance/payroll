@@ -18,5 +18,6 @@ cd frontend/vue-app
 npm install
 npm run serve
 
+cd ../..
 docker compose -f docker/docker-compose.yml down
 exit

@@ -18,6 +18,11 @@
 - **Клиентская часть**: Vue.js (реализовать по возможности)
 
 ### Установка и запуск
+
+Before starting u should create virtual environment with ```poetry shell```
+
+after that install all requirements by: ```poetry install```
+
 - You can launch the app with:
 ```./start.sh  ```
 

@@ -5,6 +5,8 @@ from api.v1.dependencies.database import get_current_user, get_db
 from models.user import User
 from schemas.user import UserCreate, UserCreateResponse, UserFullResponse, UserListResponse, UserResponse, UserUpdate
 from crud.user import crud_user
+from utils.password import generate_random_password
+from utils.email import send_password_email
 
 router = APIRouter()
 
@@ -26,7 +28,10 @@ async def create_user(
     user = await crud_user.get_by_phone(db, create_data.phone)
     if user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User already exists!")
-    return await crud_user.create(db=db, create_schema=create_data)
+    password = generate_random_password() 
+    user = await crud_user.create(db=db, create_schema=create_data, password=password)
+    await send_password_email(create_data.email, password)
+    return user
 
 
 @router.get("/users/", response_model=UserListResponse)

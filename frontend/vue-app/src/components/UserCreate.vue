@@ -1,41 +1,48 @@
 <template>
   <BaseTemplate>
-  <div class="container">
-    <h2>Create New User</h2>
-    <form v-if="currentUserIsAdmin" @submit.prevent="createUser">
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" v-model="userData.name" id="name" required class="form-control" />
+    <div class="container">
+      <h2>Create New User</h2>
+      <form v-if="currentUserIsAdmin" @submit.prevent="createUser">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" v-model="userData.name" id="name" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="secondName">Second Name:</label>
+          <input type="text" v-model="userData.second_name" id="secondName" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="surname">Surname:</label>
+          <input type="text" v-model="userData.surname" id="surname" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input type="text" v-model="userData.phone" id="phone" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" v-model="userData.email" id="email" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="position">Position:</label>
+          <input type="text" v-model="userData.position" id="position" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="salary">Salary:</label>
+          <input type="number" v-model="userData.salary" id="salary" required class="form-control" step="0.01" />
+        </div>
+        <button type="submit" class="btn btn-primary" :disabled="loading">
+          Create User
+          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+      </form>
+      <div v-if="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
       </div>
-      <div class="form-group">
-        <label for="secondName">Second Name:</label>
-        <input type="text" v-model="userData.second_name" id="secondName" required class="form-control" />
+      <div v-if="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
       </div>
-      <div class="form-group">
-        <label for="surname">Surname:</label>
-        <input type="text" v-model="userData.surname" id="surname" required class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone:</label>
-        <input type="text" v-model="userData.phone" id="phone" required class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="position">Position:</label>
-        <input type="text" v-model="userData.position" id="position" required class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="salary">Salary:</label>
-        <input type="number" v-model="userData.salary" id="salary" required class="form-control" step="0.01" />
-      </div>
-      <button type="submit" class="btn btn-primary">Create User</button>
-    </form>
-    <div v-if="errorMessage" class="alert alert-danger mt-3">
-      {{ errorMessage }}
     </div>
-    <div v-if="successMessage" class="alert alert-success mt-3">
-      {{ successMessage }}
-    </div>
-  </div>
   </BaseTemplate>
 </template>
 
@@ -55,12 +62,14 @@ export default {
         second_name: '',
         surname: '',
         phone: '',
+        email: '',
         position: '',
         salary: null,
       },
       currentUserIsAdmin: false,
       errorMessage: '',
       successMessage: '',
+      loading: false, // Add loading state
     };
   },
   created() {
@@ -87,6 +96,7 @@ export default {
       }
     },
     async createUser() {
+      this.loading = true; // Set loading to true
       try {
         const token = localStorage.getItem('token');
         await axios.post('http://localhost:8000/payroll/', this.userData, {
@@ -101,6 +111,7 @@ export default {
           second_name: '',
           surname: '',
           phone: '',
+          email: '',
           position: '',
           salary: null,
         };
@@ -111,6 +122,8 @@ export default {
           this.errorMessage = 'An unexpected error occurred.';
         }
         this.successMessage = '';
+      } finally {
+        this.loading = false; // Set loading to false after the operation
       }
     },
   },
@@ -122,7 +135,7 @@ export default {
   max-width: 600px;
   margin: auto;
 }
-.form-group {
-  margin-bottom: 15px;
+.spinner-border {
+  margin-left: 10px; /* Add some space between the button text and spinner */
 }
 </style>

@@ -3,7 +3,7 @@ from sqlalchemy import insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.user import User
-from utils.password import generate_random_password, hash_password
+from utils.password import hash_password
 
 CreateSchemaType = TypeVar("CreateSchemaType")
 UpdateSchemaType = TypeVar("UpdateSchemaType")
@@ -18,20 +18,18 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
         db: AsyncSession,
         *,
         create_schema: CreateSchemaType,
+        password: str,
         commit: bool = True,
     ) -> ModelType:
-        random_password = generate_random_password()
-        
         data = create_schema.model_dump(exclude_unset=True)
-        data['random_password'] = random_password
-        data['password'] = hash_password(random_password)
+        data['password'] = hash_password(password)
         stmt = insert(self.model).values(**data).returning(self.model)
         res = await db.execute(stmt)
         obj = res.scalars().first()
         if commit:
             await db.commit()
             await db.refresh(obj)
-        return obj
+        return obj 
 
     async def update(
         self,
