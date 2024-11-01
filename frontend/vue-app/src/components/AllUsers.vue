@@ -14,7 +14,7 @@
               : { name: 'UserInfo', params: { userId: user.id } }"
             class="user-link"
           >
-            {{ user.name }} ({{ user.phone }}) 
+            {{ user.username }}
             <span v-if="user.id === currentUserId" class="current-user">(you)</span>
           </router-link>
         </li>

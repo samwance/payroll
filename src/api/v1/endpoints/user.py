@@ -6,7 +6,7 @@ from models.user import User
 from schemas.user import UserCreate, UserCreateResponse, UserFullResponse, UserListResponse, UserResponse, UserUpdate
 from crud.user import crud_user
 from utils.password import generate_random_password
-from utils.email import send_password_email
+from utils.send_email import send_password_email
 
 router = APIRouter()
 
@@ -57,6 +57,6 @@ async def get_user(user_id: int, current_user: User = Depends(get_current_user),
     else:
         return UserResponse.from_orm(user) 
 
-@router.put("/users/", response_model=UserResponse)
+@router.patch("/users/", response_model=UserResponse)
 async def update_user(update_data: UserUpdate, current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     return await crud_user.update(db=db, user_id=current_user.id, update_schema=update_data)

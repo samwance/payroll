@@ -7,6 +7,8 @@ import UserInfo from '../components/UserInfo.vue';
 import UserCreate from '../components/UserCreate.vue';
 import MyInfo from '../components/MyInfo.vue';
 import EditUserInfo from '../components/EditUserInfo.vue';
+import AllTasks from '../components/AllTasks.vue';
+import CreateTask from '../components/CreateTask.vue';
 
 Vue.use(Router);
 
@@ -45,6 +47,16 @@ const routes = [
     path: '/edit/',
     name: 'EditUserInfo',
     component: EditUserInfo
+  },
+  {
+    path: '/tasks/',
+    name: 'AllTasks',
+    component: AllTasks
+  },
+  {
+    path: '/tasks/create/',
+    name: 'CreateTask',
+    component: CreateTask
   },
 ];
 

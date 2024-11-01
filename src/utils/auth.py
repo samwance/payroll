@@ -8,6 +8,8 @@ from utils.password import verify_password
 from config.config import jwt_settings
 from crud.user import crud_user
 from utils.tokens import access_security, refresh_security
+from utils.redis import redis_client
+
 
 ResponseT = TypeVar("ResponseT", bound=Response)
 
@@ -27,12 +29,14 @@ async def create_access_token(subject: TokenPayload) -> str:
     return access_security.create_access_token(subject=subject)
 
 async def create_refresh_token(subject: TokenPayload) -> str:
-    return refresh_security.create_refresh_token(
+    refresh_token =  refresh_security.create_refresh_token(
         subject=subject,
         expires_delta=timedelta(
             minutes=jwt_settings.JWT_REFRESH_TOKEN_EXPIRES
         ),
     )
+    redis_client.set_refresh_token(subject.get("id"), refresh_token, jwt_settings.JWT_REFRESH_TOKEN_EXPIRES * 60)
+    return refresh_token
 
 async def set_tokens_to_cookie(
     response: ResponseT, tokens: TokenAccessRefresh
@@ -55,8 +59,17 @@ async def set_tokens_to_cookie(
 async def authenticate_user(db, phone: str, password: str):
     user = await crud_user.get_by_phone(db, phone)
     if not user:
-        return False
+        return "Havent found user with this phone"
     if not verify_password(password, user.password):
-        return False
+        return "Wrong password"
+    return user
+
+
+async def authenticate_username(db, username: str, password: str):
+    user = await crud_user.get_by_username(db, username)
+    if not user:
+        return "Havent found user with this username"
+    if not verify_password(password, user.password):
+        return "Wrong password"
     return user
     

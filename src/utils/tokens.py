@@ -4,13 +4,7 @@ from config.config import jwt_settings
 
 access_security = JwtAccessBearerCookie(
     secret_key=jwt_settings.JWT_SECRET_KEY,
-    access_expires_delta=timedelta(
-        minutes=jwt_settings.JWT_ACCESS_TOKEN_EXPIRES
-    ),
-)
-access_security_optional = JwtAccessBearerCookie(
-    secret_key=jwt_settings.JWT_SECRET_KEY,
-    auto_error=False,
+    auto_error=True,
     access_expires_delta=timedelta(
         minutes=jwt_settings.JWT_ACCESS_TOKEN_EXPIRES
     ),
@@ -18,6 +12,7 @@ access_security_optional = JwtAccessBearerCookie(
 
 refresh_security = JwtRefreshBearer(
     secret_key=jwt_settings.JWT_SECRET_KEY,
+    auto_error=True,
     refresh_expires_delta=timedelta(
         minutes=jwt_settings.JWT_REFRESH_TOKEN_EXPIRES
     ),

@@ -18,6 +18,29 @@ services:
     networks:
       - home
 
+  redis:
+    image: redis:7.2.1-alpine3.18
+    container_name: payroll-redis
+    hostname: payroll-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1
+    ports:
+      - "127.0.0.2:6379:6379"
+    volumes:
+      - redisstore:/data/
+    networks:
+      - home
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
 
 networks:
   home: {}

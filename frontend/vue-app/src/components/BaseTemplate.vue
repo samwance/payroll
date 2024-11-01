@@ -1,9 +1,15 @@
 <template>
   <div :class="theme" class="full-page">
     <div v-if="isAuthenticated" class="header">
-      <button @click="goBack" class="btn btn-secondary return-button">Return Back</button>
-      <button @click="logout" class="btn btn-danger logout-button">Logout</button>
-      <button @click="toggleTheme" class="btn btn-info theme-button">Toggle Theme</button>
+      <button @click="goBack" class="btn-menu btn-secondary return-button" title="Return Back">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button @click="logout" class="btn-menu btn-danger logout-button" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <button @click="toggleTheme" class="btn-menu btn-info theme-button" title="Toggle Theme">
+        <i :class="theme === 'light' ? 'fas fa-sun' : 'fas fa-moon'"></i>
+      </button>
     </div>
     <slot v-if="isAuthenticated"></slot>
   </div>
@@ -64,3 +70,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+.btn-menu i {
+  font-size: 24px;
+}
+</style>

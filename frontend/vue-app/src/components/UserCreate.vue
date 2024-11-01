@@ -3,45 +3,37 @@
     <div class="container">
       <h2>Create New User</h2>
       <form v-if="currentUserIsAdmin" @submit.prevent="createUser">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" v-model="userData.name" id="name" required class="form-control" />
+        <div class="form-group" v-for="(field, index) in fields" :key="index">
+          <label :for="field.id">{{ field.label }}:</label>
+          <input
+            v-if="field.type !== 'select'"
+            :type="field.type"
+            v-model="userData[field.model]"
+            :id="field.id"
+            class="form-control"
+          />
+          <select
+            v-else
+            v-model="userData[field.model]"
+            :id="field.id"
+            class="form-control"
+          >
+            <option v-for="option in field.options" :key="option.value" :value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
         </div>
         <div class="form-group">
-          <label for="secondName">Second Name:</label>
-          <input type="text" v-model="userData.second_name" id="secondName" required class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="surname">Surname:</label>
-          <input type="text" v-model="userData.surname" id="surname" required class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone:</label>
-          <input type="text" v-model="userData.phone" id="phone" required class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="text" v-model="userData.email" id="email" required class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="position">Position:</label>
-          <input type="text" v-model="userData.position" id="position" required class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="salary">Salary:</label>
-          <input type="number" v-model="userData.salary" id="salary" required class="form-control" step="0.01" />
+          <label for="username">Username:</label>
+          <input type="text" v-model="userData.username" id="username" required class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary" :disabled="loading">
           Create User
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
       </form>
-      <div v-if="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
-      </div>
-      <div v-if="successMessage" class="alert alert-success mt-3">
-        {{ successMessage }}
-      </div>
+      <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      <div v-if="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
     </div>
   </BaseTemplate>
 </template>
@@ -65,15 +57,25 @@ export default {
         email: '',
         position: '',
         salary: null,
+        username: '',
       },
       currentUserIsAdmin: false,
       errorMessage: '',
       successMessage: '',
-      loading: false, // Add loading state
+      loading: false,
+      fields: [
+        { id: 'name', label: 'Name', model: 'name', type: 'text' },
+        { id: 'secondName', label: 'Second Name', model: 'second_name', type: 'text' },
+        { id: 'surname', label: 'Surname', model: 'surname', type: 'text' },
+        { id: 'phone', label: 'Phone', model: 'phone', type: 'text' },
+        { id: 'email', label: 'Email', model: 'email', type: 'text' },
+        { id: 'position', label: 'Position', model: 'position', type: 'text' },
+        { id: 'salary', label: 'Salary', model: 'salary', type: 'number', step: '0.01' },
+      ],
     };
   },
   created() {
-    this.checkAdminStatus(); // Check if the user is an admin on component creation
+    this.checkAdminStatus();
   },
   methods: {
     async checkAdminStatus() {
@@ -84,19 +86,21 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.currentUserIsAdmin = response.data.is_admin; // Set currentUserIsAdmin based on the response
-
+        this.currentUserIsAdmin = response.data.is_admin;
         if (!this.currentUserIsAdmin) {
-          alert('This page is only available for admins.'); // Show alert if not admin
+          this.showAdminAlert();
         }
       } catch (error) {
         console.error('Failed to fetch user info:', error);
-        this.currentUserIsAdmin = false; // Default to false if there's an error
-        alert('This page is only available for admins.'); // Show alert if an error occurs
+        this.currentUserIsAdmin = false;
+        this.showAdminAlert();
       }
     },
+    showAdminAlert() {
+      alert('This page is only available for admins.');
+    },
     async createUser() {
-      this.loading = true; // Set loading to true
+      this.loading = true;
       try {
         const token = localStorage.getItem('token');
         await axios.post('http://localhost:8000/payroll/', this.userData, {
@@ -106,25 +110,32 @@ export default {
         });
         this.successMessage = 'User created successfully!';
         this.errorMessage = '';
-        this.userData = {
-          name: '',
-          second_name: '',
-          surname: '',
-          phone: '',
-          email: '',
-          position: '',
-          salary: null,
-        };
+        this.resetForm();
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.errorMessage = error.response.data.detail || 'An error occurred while creating the user.';
-        } else {
-          this.errorMessage = 'An unexpected error occurred.';
-        }
-        this.successMessage = '';
+        this.handleError(error);
       } finally {
-        this.loading = false; // Set loading to false after the operation
+        this.loading = false;
       }
+    },
+    resetForm() {
+      this.userData = {
+        name: '',
+        second_name: '',
+        surname: '',
+        phone: '',
+        email: '',
+        position: '',
+        salary: null,
+        username: '',
+      };
+    },
+    handleError(error) {
+      if (error.response && error.response.data) {
+        this.errorMessage = error.response.data.detail || 'An error occurred while creating the user.';
+      } else {
+        this.errorMessage = 'An unexpected error occurred.';
+      }
+      this.successMessage = '';
     },
   },
 };
@@ -136,6 +147,6 @@ export default {
   margin: auto;
 }
 .spinner-border {
-  margin-left: 10px; /* Add some space between the button text and spinner */
+  margin-left: 10px;
 }
 </style>

@@ -1,15 +1,18 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from pydantic import BaseModel, Field
 
+from schemas.task import TaskListResponse, TaskResponse
+
 class UserBase(BaseModel):
-    second_name: str
-    name: str
-    surname: str
-    phone: str
-    email: str
-    position: str
+    second_name: Optional[str]
+    name: Optional[str]
+    surname: Optional[str]
+    phone: Optional[str]
+    email: Optional[str]
+    position: Optional[str]
+    username: Optional[str]
     photo: Optional[str] = None
 
 class UserCreate(UserBase):
@@ -17,6 +20,10 @@ class UserCreate(UserBase):
 
     class Config:
         from_attributes = True
+
+class UserCreateSimple(BaseModel):
+    username: str
+    password: str
 
 class UserCreateDB(UserBase):
     password: str
@@ -35,6 +42,14 @@ class UserFullResponse(UserBase):
     updated_at: datetime
     is_admin: bool
     salary: float
+    assigned_tasks: Union[TaskListResponse, List[TaskResponse]]
+
+    class Config:
+        from_attributes = True
+
+class UserSimpleResponse(BaseModel):
+    id: int
+    username: str
 
     class Config:
         from_attributes = True
@@ -44,6 +59,7 @@ class UserResponse(UserBase):
     registered_at: datetime
     updated_at: datetime
     is_admin: bool
+    assigned_tasks: Union[TaskListResponse, List[TaskResponse]]
 
     class Config:
         from_attributes = True
@@ -60,8 +76,9 @@ class UserListResponse(BaseModel):
     users: List[UserResponse]
 
 class UserLogin(BaseModel):
-    phone: str
-    password: str
+    phone: str = None
+    password: str = None
+    username: str
 
 class Token(BaseModel):
     access_token: str

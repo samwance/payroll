@@ -41,13 +41,17 @@ class EMAILSettings(BaseSetting):
     EMAIL_PORT: int
 
 
-
 class DBSettings(BaseSetting):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
+
+
+class RedisSettings(BaseSetting):
+    REDIS_HOST: str
+    REDIS_PORT: int
 
 
 class JWTSettings(BaseSetting):
@@ -65,3 +69,4 @@ app_settings = AppSettings()
 db_settings = DBSettings()
 jwt_settings = JWTSettings()
 email_settings = EMAILSettings()
+redis_settings = RedisSettings()

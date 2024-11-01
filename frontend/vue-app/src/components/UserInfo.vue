@@ -21,6 +21,15 @@
       <p>User not found.</p>
     </div>
   </div>
+   <div class="container">
+          <h3>Assigned Tasks</h3>
+          <ul v-if="user.assigned_tasks && user.assigned_tasks.length > 0">
+            <li v-for="task in user.assigned_tasks" :key="task.id">
+              <strong>{{ task.title }}</strong> - {{ task.description }} (Status: {{ task.status }})
+            </li>
+          </ul>
+          <p v-else>No assigned tasks.</p>
+        </div>
   </BaseTemplate>
 </template>
 

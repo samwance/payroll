@@ -1,0 +1,33 @@
+---
+
+services:
+  core:
+    user: app:app
+    container_name: payroll-core
+    hostname: payroll-core
+    restart: unless-stopped
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      sh -c "poetry run alembic -c src/alembic.ini upgrade head &&
+            poetry run alembic -c src/alembic.ini stamp head &&
+            poetry run python src/main.py"
+    volumes:
+      - ..:/app/
+    networks:
+      - home
+    expose:
+      - 8000
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "./healthcheck.sh"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"

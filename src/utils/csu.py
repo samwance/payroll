@@ -1,26 +1,37 @@
-from fastapi import Depends
-from models.user import User
+import asyncio
+from getpass import getpass
+from fastapi.exceptions import HTTPException
+from pydantic import EmailStr, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.v1.dependencies.database import get_db
+from models.user import User
 from utils.password import hash_password
+from api.v1.dependencies.database import get_db
 
+async def console_manager() -> None:
+    """Function to implement user's console interaction for creating an admin user."""
+    while True:
+        username = input("Input username: ")
+        if username.strip():
+            break
+        print("username shouldn't be empty string, try again.")
 
-async def create_admin_user(db: AsyncSession = Depends(get_db)):
-    password = 'password'
+    password = getpass("Input password: ")
+
+    await save_admin_user(username, password)
+    print("Admin successfully created.")
+
+async def save_admin_user(username: str, password: str):
+    """Save cleaned data to db"""
     hashed_password = hash_password(password)
-
     admin_user = User(
-        name='accountant',
-        second_name='accountant',
-        surname='accountant',
-        position='accountant',
-        email="admin@admin.com",
-        salary=0,
-        phone='12345678',
+        username=username,
         password=hashed_password,
         is_admin=True
     )
-    db.add(admin_user)
-    await db.commit()
-    await db.refresh(admin_user)
-    return admin_user
+    async for db in get_db():
+        db.add(admin_user)
+        await db.commit()
+        await db.refresh(admin_user)
+
+if __name__ == "__main__":
+    asyncio.run(console_manager())

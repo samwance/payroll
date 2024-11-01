@@ -7,6 +7,14 @@
         <button @click="viewUserInfo" class="btn btn-info">View Your Information</button>
         <button @click="editUserInfo" class="btn btn-info">Edit Your Information</button>
         <button v-if="isAdmin" @click="createUser" class="btn btn-info">Register New User</button>
+        <button @click="getAllTasks" class="btn btn-info">View Tasks</button>
+        <button @click="createTask" class="btn btn-info">Create New Task</button>
+      </div>
+      <div v-if="tasks.length > 0" class="tasks">
+        <h3>Your Tasks:</h3>
+        <ul>
+          <li v-for="task in tasks" :key="task.id">{{ task.name }}</li>
+        </ul>
       </div>
     </div>
   </BaseTemplate>
@@ -25,6 +33,7 @@ export default {
     return {
       userId: null,
       isAdmin: false, // Initialize isAdmin here
+      tasks: [], // Array to hold tasks
     };
   },
   created() {
@@ -61,6 +70,12 @@ export default {
     createUser() {
       this.$router.push({ name: 'UserCreate' });
     },
+    getAllTasks() {
+      this.$router.push({ name: 'AllTasks' });
+    },
+    createTask() {
+      this.$router.push({ name: 'CreateTask' });
+    },
   },
 };
 </script>
@@ -70,5 +85,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.tasks {
+  margin-top: 20px;
 }
 </style>

@@ -2,7 +2,7 @@ from typing import Callable
 from httpx import AsyncClient
 from models.user import User
 from schemas.user import UserCreate, UserUpdate
-from src.utils.password import hash_password
+from utils.password import hash_password
 
 ROOT_ENDPOINT = "/payroll/"
 
