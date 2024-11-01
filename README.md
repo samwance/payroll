@@ -33,10 +33,6 @@ This command will create an .env file from .env.template and launch app on the p
 - frontend
 ```http://localhost:8080/```
 
-Accountant login information:
-- phone: ```12345678```
-- password: ```password```
-
 ### Эндпоинты
 ## Payroll
 Создать пользователя
@@ -60,4 +56,27 @@ Accountant login information:
 
 Выход из системы
 ```DELETE /logout/```
+
+## Tasks
+List tasks
+```GET /tasks/```
+
+Post task
+```POST /tasks/```
+
+
+Get Task
+```GET /tasks/{task_id}/```
+
+
+Update Task
+```PATCH /tasks/{task_id}/```
+
+
+Delete Task
+```DELETE /tasks/{task_id}/```
+
+
+
+
 
