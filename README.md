@@ -18,11 +18,17 @@ Additionally, the application includes functionality for task management, allowi
 
 ### Installation and Launch
 
-Before starting u should create virtual environment with ```poetry shell```
+Before starting u should create virtual environment with 
+```
+poetry shell
+```
 
-after that install all requirements by: ```poetry install```
+after that install all requirements by: 
+```
+poetry install
+```
 
-- You can launch the app with:
+Now u can launch the app with:
 ```
 ./start.sh
 ```
