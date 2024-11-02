@@ -62,7 +62,7 @@ class CRUDTask(Generic[CreateSchemaType, ModelType]):
         return obj
 
     async def get_task(self, db: AsyncSession, task_id: int) -> Optional[ModelType]:
-        result = await db.execute(select(self.model).where(self.model.id == task_id))
+        result = await db.execute(select(self.model).options(selectinload(Task.assignee)).where(self.model.id == task_id))
         return result.scalar_one_or_none()
 
     async def get_tasks(self, db: AsyncSession):

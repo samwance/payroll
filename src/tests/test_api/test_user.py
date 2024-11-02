@@ -11,33 +11,35 @@ class TestUserApi:
         admin_auth_headers = await get_auth_headers(user_fixture)
         
         new_user_data = UserCreate(
-            name="Another_user",
-            second_name="User",
-            surname='Another',
-            phone="11111111",
-            position='jun',
-            password=hash_password("password123"),
-            random_password='password123',
-            salary=10000,
+            second_name="string",
+            name="string",
+            surname="string",
+            phone="string",
+            email="string",
+            position="string",
+            username="string",
+            photo="string",
+            salary=0
         )
         
         response = await http_client.post(ROOT_ENDPOINT, json=new_user_data.model_dump(), headers=admin_auth_headers)
         assert response.status_code == 201
         response_data = response.json()
-        assert response_data["phone"] == new_user_data.phone
+        assert response_data["email"] == new_user_data.email
 
     async def test_create_user_forbidden(self, http_client: AsyncClient, user_fixture_2: User, get_auth_headers: Callable):
         non_admin_auth_headers = await get_auth_headers(user_fixture_2)
         
         new_user_data = UserCreate(
-            name="Another_user",
+            name='name',
+            username='test',
             second_name="User",
             surname='Another',
-            phone="11111111",
+            phone='12345678',
             position='jun',
-            password=hash_password("password123"),
-            random_password='password123',
-            salary=10000,
+            password="password123",
+            salary=0,
+            email='test@test.com',
         )
         
         response = await http_client.post(ROOT_ENDPOINT, json=new_user_data.model_dump(), headers=non_admin_auth_headers)
@@ -74,7 +76,7 @@ class TestUserApi:
         update_data = UserUpdate(
             name="UpdatedFirstName"
         )
-        response = await http_client.put(f"{ROOT_ENDPOINT}users/", json=update_data.model_dump(exclude_unset=True), headers=auth_headers)
+        response = await http_client.patch(f"{ROOT_ENDPOINT}users/", json=update_data.model_dump(exclude_unset=True), headers=auth_headers)
         assert response.status_code == 200
         response_data = response.json()
         assert response_data["name"] == update_data.name
