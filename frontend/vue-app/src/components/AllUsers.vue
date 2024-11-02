@@ -5,8 +5,7 @@
       <ul class="list-group">
         <li 
           v-for="user in users" 
-          :key="user.id" 
-          class="list-group-item"
+          :key="user.id"
         >
           <router-link 
             :to="user.id === currentUserId 
@@ -14,7 +13,7 @@
               : { name: 'UserInfo', params: { userId: user.id } }"
             class="user-link"
           >
-            {{ user.username }}
+            <span class="username">{{ user.username }}</span>
             <span v-if="user.id === currentUserId" class="current-user">(you)</span>
           </router-link>
         </li>
@@ -22,6 +21,7 @@
     </div>
   </BaseTemplate>
 </template>
+
 
 <script>
 import axios from 'axios';
