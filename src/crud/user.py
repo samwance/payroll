@@ -111,7 +111,7 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
         result = await db.execute(
             select(User)
             .options(selectinload(User.assigned_tasks))
-            .where(not User.is_admin)
+            .where(User.is_admin != True)  # noqa: E712
         )
         return result.scalars().all()
 
