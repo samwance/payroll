@@ -1,23 +1,22 @@
-# Payroll Management Web Application
+# Payroll App
 
-## Тестовое задание
+### Description
 
-Разработать web-приложение для учета заработной платы на предприятии ООО «Р&К».
+At the company, there is an accountant who must be able to register new users in the system (login, password) with the provision of general information about the user (full name, phone number, photo, position) and set their salary. Each employee who receives a login/password from the accountant must be able to log in to the system. Each user logged into the system must be able to view the list of users and general information about them (full name, phone number, photo, position) and additionally view information about their (only their) salary. Information about the salaries of all users should be accessible only to the accountant.
 
-### Описание
+Additionally, the application includes functionality for task management, allowing users to create, update, and delete tasks, as well as view a list of all tasks.
 
-На предприятии есть бухгалтер, который должен иметь возможность регистрировать в системе новых пользователей (логин, пароль) с указанием общей информации о пользователе (ФИО, телефон, фотография, должность) и устанавливать им З/П. Каждый работник, получивший логин/пароль от бухгалтера, должен иметь возможность авторизоваться в системе. Каждый пользователь, авторизованный в системе, должен иметь возможность просмотреть список пользователей и общую информацию о них (ФИО, телефон, фотография, должность) и дополнительно информацию о своей (только своей) З/П. Информация о З/П всех пользователей должна быть доступна только бухгалтеру.
+### Technologies
 
-### Технологии
+- **Framework**: FastAPI
+- **Migration system**: Alembic
+- **DB**: PostgreSQL
+- **Database Connection Driver**: asyncpg
+- **Testing**: Pytest
+- **Frontend**: Vue.js
+- **In memory DB**: Redis
 
-- **Фреймворк**: FastAPI
-- **Системы миграций**: Alembic
-- **СУБД**: PostgreSQL
-- **Драйвер для подключения к БД**: asyncpg
-- **Тестирование**: Pytest
-- **Клиентская часть**: Vue.js (реализовать по возможности)
-
-### Установка и запуск
+### Installation and Launch
 
 Before starting u should create virtual environment with ```poetry shell```
 
@@ -26,42 +25,50 @@ after that install all requirements by: ```poetry install```
 - You can launch the app with:
 ```./start.sh  ```
 
-This command will create an .env file from .env.template and launch app on the ports:
+This command will create .env file from .env.template and launch the app on the ports:
 - backend
 ```http://0.0.0.0:8000/```
 
 - frontend
 ```http://localhost:8080/```
 
-### Эндпоинты
+## Admin
+
+You can create superuser in the console:
+```python src/utils/csu.py```
+
+*if u have problems with imports*:
+paste ```export PYTHONPATH=src``` in your console
+
+### Endpoints
 ## Payroll
-Создать пользователя
+Create user
 ```POST /payroll/```
 
-Получить список пользователей
+Get users list
 ```GET /payroll/users/```
 
-Обновить пользователя
+Update user data
 ```PUT /payroll/users/```
 
-Получить информацию о пользователе
+Get current user's data
 ```GET /payroll/profile/```
 
-Получить информацию о конкретном пользователе
+Get user's data
 ```GET /payroll/users/{user_id}/```
 
 ## Auth
-Вход для получения токена доступа
+Login to Obtain Access Token
 ```POST /login/```
 
-Выход из системы
+Logout
 ```DELETE /logout/```
 
 ## Tasks
 List tasks
 ```GET /tasks/```
 
-Post task
+Create task
 ```POST /tasks/```
 
 
