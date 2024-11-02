@@ -1,5 +1,4 @@
-import sys
-from typing import Callable, Generator
+from typing import Callable
 
 import pytest_asyncio
 from httpx import AsyncClient
@@ -10,13 +9,13 @@ from database.database import engine
 from main import create_app
 from models.user import User
 from models.base import Base
-from utils.password import hash_password
 from utils.tokens import access_security
 
-from .fixtures import * 
+from .fixtures import *  # noqa: F403
+
 
 @pytest_asyncio.fixture
-async def async_session() -> AsyncSession:
+async def async_session():
     session = sessionmaker(
         engine,
         class_=AsyncSession,
@@ -33,15 +32,17 @@ async def async_session() -> AsyncSession:
 
     await engine.dispose()
 
+
 @pytest_asyncio.fixture
 async def http_client(
     async_session: AsyncSession,
-) -> Generator[AsyncClient, None, None]:
+):
     test_app = create_app()
     async with (
         AsyncClient(app=test_app, base_url="http://0.0.0.0:8000") as ac,
     ):
         yield ac
+
 
 @pytest_asyncio.fixture
 async def get_auth_headers() -> Callable:

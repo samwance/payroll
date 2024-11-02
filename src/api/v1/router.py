@@ -9,4 +9,3 @@ router = APIRouter()
 router.include_router(payroll_router, prefix="/payroll", tags=["Payroll"])
 router.include_router(auth_router, tags=["Auth"])
 router.include_router(task_router, prefix="/tasks", tags=["Tasks"])
-

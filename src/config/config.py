@@ -35,6 +35,7 @@ class AppSettings(BaseSetting):
             f"{self.EXTERNAL_SERVICE_HOST}"
         )
 
+
 class EMAILSettings(BaseSetting):
     EMAIL_SENDER: str
     EMAIL_PASSWORD: str

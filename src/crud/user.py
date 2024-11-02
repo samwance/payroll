@@ -1,4 +1,4 @@
-from typing import Generic, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 from sqlalchemy import insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -11,8 +11,9 @@ CreateSchemaType = TypeVar("CreateSchemaType")
 UpdateSchemaType = TypeVar("UpdateSchemaType")
 ModelType = TypeVar("ModelType")
 
+
 class CRUDUser(Generic[CreateSchemaType, ModelType]):
-    def __init__(self, model):
+    def __init__(self, model: ModelType) -> User:
         self.model = model
 
     async def create(
@@ -24,15 +25,15 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
         commit: bool = True,
     ) -> ModelType:
         data = create_schema.model_dump(exclude_unset=True)
-        data['password'] = hash_password(password)
+        data["password"] = hash_password(password)
         stmt = insert(self.model).values(**data).returning(self.model)
         res = await db.execute(stmt)
         obj = res.scalars().first()
         if commit:
             await db.commit()
             await db.refresh(obj)
-        return obj 
-    
+        return obj
+
     async def create_easy(
         self,
         db: AsyncSession,
@@ -41,14 +42,14 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
         commit: bool = True,
     ) -> ModelType:
         data = create_schema.model_dump(exclude_unset=True)
-        data['password'] = hash_password(data['password'])
+        data["password"] = hash_password(data["password"])
         stmt = insert(self.model).values(**data).returning(self.model)
         res = await db.execute(stmt)
         obj = res.scalars().first()
         if commit:
             await db.commit()
             await db.refresh(obj)
-        return obj 
+        return obj
 
     async def update(
         self,
@@ -60,11 +61,11 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
         existing_user = await self.get_user(db, user_id)
         if not existing_user:
             return None
-        
+
         update_data = update_schema.model_dump(exclude_unset=True)
         if "password" in update_data:
             update_data["password"] = hash_password(update_data["password"])
-        
+
         stmt = (
             update(self.model)
             .where(self.model.id == user_id)
@@ -80,24 +81,39 @@ class CRUDUser(Generic[CreateSchemaType, ModelType]):
 
         return obj
 
-    async def get_by_phone(self, db: AsyncSession, phone: str) -> Optional[ModelType]:
-        result = await db.execute(select(self.model).where(self.model.phone == phone))
-        return result.scalar_one_or_none()
-    
-    async def get_by_username(self, db: AsyncSession, username: str) -> Optional[ModelType]:
-        result = await db.execute(select(self.model).where(self.model.username == username))
+    async def get_by_phone(
+        self, db: AsyncSession, phone: str
+    ) -> Optional[ModelType]:
+        result = await db.execute(
+            select(self.model).where(self.model.phone == phone)
+        )
         return result.scalar_one_or_none()
 
-    async def get_user(self, db: AsyncSession, user_id: int):
+    async def get_by_username(
+        self, db: AsyncSession, username: str
+    ) -> Optional[ModelType]:
+        result = await db.execute(
+            select(self.model).where(self.model.username == username)
+        )
+        return result.scalar_one_or_none()
+
+    async def get_user(
+        self, db: AsyncSession, user_id: int
+    ) -> Optional[ModelType]:
         result = await db.execute(
             select(User)
-            .options(selectinload(User.assigned_tasks)) 
+            .options(selectinload(User.assigned_tasks))
             .where(User.id == user_id)
         )
         return result.scalars().first()
 
-    async def get_users(self, db: AsyncSession):
-        result = await db.execute(select(User).options(selectinload(User.assigned_tasks)).where(User.is_admin != True))
+    async def get_users(self, db: AsyncSession) -> List[ModelType]:
+        result = await db.execute(
+            select(User)
+            .options(selectinload(User.assigned_tasks))
+            .where(not User.is_admin)
+        )
         return result.scalars().all()
+
 
 crud_user = CRUDUser(User)

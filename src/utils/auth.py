@@ -1,8 +1,9 @@
-from datetime import datetime, timedelta, timezone
-from typing import Optional, TypeVar
+from datetime import timedelta
+from typing import TypeVar
 from fastapi import Response
-from jose import jwt
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from models.user import User
 from schemas.user import TokenAccessRefresh, TokenPayload
 from utils.password import verify_password
 from config.config import jwt_settings
@@ -16,6 +17,7 @@ ResponseT = TypeVar("ResponseT", bound=Response)
 ACCESS_TOKEN_COOKIE_KEY = "access_token_cookie"
 REFRESH_TOKEN_COOKIE_KEY = "refresh_token_cookie"
 
+
 async def create_tokens(subject: TokenPayload) -> TokenAccessRefresh:
     access_token = await create_access_token(subject)
     refresh_token = await create_refresh_token(subject)
@@ -25,18 +27,25 @@ async def create_tokens(subject: TokenPayload) -> TokenAccessRefresh:
         token_type="bearer",
     )
 
+
 async def create_access_token(subject: TokenPayload) -> str:
     return access_security.create_access_token(subject=subject)
 
+
 async def create_refresh_token(subject: TokenPayload) -> str:
-    refresh_token =  refresh_security.create_refresh_token(
+    refresh_token = refresh_security.create_refresh_token(
         subject=subject,
         expires_delta=timedelta(
             minutes=jwt_settings.JWT_REFRESH_TOKEN_EXPIRES
         ),
     )
-    redis_client.set_refresh_token(subject.get("id"), refresh_token, jwt_settings.JWT_REFRESH_TOKEN_EXPIRES * 60)
+    redis_client.set_refresh_token(
+        subject.get("id"),
+        refresh_token,
+        jwt_settings.JWT_REFRESH_TOKEN_EXPIRES * 60,
+    )
     return refresh_token
+
 
 async def set_tokens_to_cookie(
     response: ResponseT, tokens: TokenAccessRefresh
@@ -56,7 +65,9 @@ async def set_tokens_to_cookie(
     return response
 
 
-async def authenticate_user(db, phone: str, password: str):
+async def authenticate_user(
+    db: AsyncSession, phone: str, password: str
+) -> User:
     user = await crud_user.get_by_phone(db, phone)
     if not user:
         return "Havent found user with this phone"
@@ -65,11 +76,12 @@ async def authenticate_user(db, phone: str, password: str):
     return user
 
 
-async def authenticate_username(db, username: str, password: str):
+async def authenticate_username(
+    db: AsyncSession, username: str, password: str
+) -> User:
     user = await crud_user.get_by_username(db, username)
     if not user:
         return "Havent found user with this username"
     if not verify_password(password, user.password):
         return "Wrong password"
     return user
-    
