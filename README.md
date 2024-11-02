@@ -44,6 +44,7 @@ This command will create .env file from .env.template and launch the app on the 
 ```./loopback_full``` *if some ports are unavailabe*
 
 ## Testing
+to start tests:
 ```
 pytest -x
 ```
@@ -101,7 +102,4 @@ Update Task
 Delete Task
 ```DELETE /tasks/{task_id}/```
 
-
-
-
-
+*:)*
