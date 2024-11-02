@@ -76,8 +76,7 @@ class UserListResponse(BaseModel):
     users: List[UserResponse]
 
 class UserLogin(BaseModel):
-    phone: str = None
-    password: str = None
+    password: str
     username: str
 
 class Token(BaseModel):

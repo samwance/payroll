@@ -37,10 +37,7 @@ async def register_user(
 async def login_for_access_token(
     user_login: UserLogin, db: AsyncSession = Depends(get_db)
     ):
-    if user_login.phone:
-        user = await authenticate_user(db, user_login.phone, user_login.password)
-    else:
-        user = await authenticate_username(db, user_login.username, user_login.password)
+    user = await authenticate_username(db, user_login.username, user_login.password)
     if isinstance(user, str):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
