@@ -19,7 +19,7 @@
                 {{ task.assignee.username }}
               </router-link>
             </p>
-            <p v-if="isTaskCreator(task.creator_id)">
+            <p v-if="isTaskCreator(task.creator_id) || isAdmin">
               <button @click="deleteTask(task.id)" class="btn btn-danger">
                 <i class="fas fa-trash-alt"></i> <!-- Font Awesome Trash Icon -->
               </button>
@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       tasks: [], // Array to hold tasks
-      userId: localStorage.getItem('userId'), // Get user ID directly from local storage
+      userId: localStorage.getItem('userId'),
+      isAdmin: localStorage.getItem('isAdmin') === 'true',
     };
   },
   created() {

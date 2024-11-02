@@ -4,7 +4,7 @@
 
 At the company, there is an accountant who must be able to register new users in the system (login, password) with the provision of general information about the user (full name, phone number, photo, position) and set their salary. Each employee who receives a login/password from the accountant must be able to log in to the system. Each user logged into the system must be able to view the list of users and general information about them (full name, phone number, photo, position) and additionally view information about their (only their) salary. Information about the salaries of all users should be accessible only to the accountant.
 
-Additionally, the application includes functionality for task management, allowing users to create, update, and delete tasks, as well as view a list of all tasks.
+Additionally, the application includes functionality for task management, allowing users to create, update, and delete tasks, as well as view a list of all tasks. Users cant make an task for admin user, user can delete only tasks that he or she created  but the admin can delete all tasks
 
 ### Technologies
 

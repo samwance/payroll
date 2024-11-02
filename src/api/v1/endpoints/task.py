@@ -1,17 +1,17 @@
-from typing import List, Union
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.v1.dependencies.database import get_current_user, get_db
 from models.task import Task
 from models.user import User
-from schemas.task import TaskCreate, TaskResponse, TaskListResponse, TaskUpdate
+from schemas.task import TaskCreate, TaskResponse, TaskListResponse, TaskResponseSimple, TaskUpdate
 from crud.task import crud_task
 
 router = APIRouter()
 
 @router.post(
     "/",
-    response_model=TaskResponse,
+    response_model=TaskResponseSimple,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_task(

@@ -21,6 +21,16 @@ class TaskUpdate(BaseModel):
     priority: Optional[int] = None
     deadline: Optional[datetime] = None
 
+class TaskResponseSimple(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    status: str
+    priority: Optional[int]
+    deadline: Optional[datetime] = None
+    creator_id: int
+    assignee_id: int
+
 class TaskResponse(BaseModel):
     id: int
     title: str
