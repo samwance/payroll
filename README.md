@@ -8,13 +8,13 @@ Additionally, the application includes functionality for task management, allowi
 
 ### Technologies
 
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi&logoColor=white)
-![Alembic](https://img.shields.io/badge/Alembic-4B4B4B?style=flat&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat&logo=postgresql&logoColor=white)
-![asyncpg](https://img.shields.io/badge/asyncpg-3B2B2B?style=flat&logo=python&logoColor=white)
-![Pytest](https://img.shields.io/badge/Pytest-DAA520?style=flat&logo=pytest&logoColor=white)
-![Vue.js](https://img.shields.io/badge/Vue.js-42b883?style=flat&logo=vue.js&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Alembic](https://img.shields.io/badge/Alembic-4B4B4B?style=flat&logo=python&logoColor=white)](https://alembic.sqlalchemy.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![asyncpg](https://img.shields.io/badge/asyncpg-3B2B2B?style=flat&logo=python&logoColor=white)](https://github.com/MagicStack/asyncpg)
+[![Pytest](https://img.shields.io/badge/Pytest-DAA520?style=flat&logo=pytest&logoColor=white)](https://docs.pytest.org/en/stable/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-42b883?style=flat&logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)](https://redis.io/)
 
 ### Installation and Launch
 
