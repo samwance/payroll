@@ -8,13 +8,13 @@ Additionally, the application includes functionality for task management, allowi
 
 ### Technologies
 
-- **Framework**: FastAPI
-- **Migration system**: Alembic
-- **DB**: PostgreSQL
-- **Database Connection Driver**: asyncpg
-- **Testing**: Pytest
-- **Frontend**: Vue.js
-- **In memory DB**: Redis
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi&logoColor=white)
+![Alembic](https://img.shields.io/badge/Alembic-4B4B4B?style=flat&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat&logo=postgresql&logoColor=white)
+![asyncpg](https://img.shields.io/badge/asyncpg-3B2B2B?style=flat&logo=python&logoColor=white)
+![Pytest](https://img.shields.io/badge/Pytest-DAA520?style=flat&logo=pytest&logoColor=white)
+![Vue.js](https://img.shields.io/badge/Vue.js-42b883?style=flat&logo=vue.js&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)
 
 ### Installation and Launch
 
