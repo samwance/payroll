@@ -65,12 +65,13 @@ class UserResponse(UserBase):
         from_attributes = True
 
 class UserUpdate(BaseModel):
-    second_name: str = None
-    name: str = None
-    surname: str = None
-    phone: str = None
-    email: str = None
+    second_name: Optional[str] = None
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
     password: Optional[str] = None
+    username: Optional[str] = None
 
 class UserListResponse(BaseModel):
     users: List[UserResponse]

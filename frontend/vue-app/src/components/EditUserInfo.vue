@@ -5,31 +5,35 @@
     <form @submit.prevent="updateUser">
       <div class="form-group">
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" v-model="user.phone" class="form-control" required>
+        <input type="text" id="phone" v-model="user.phone" class="form-control">
       </div>
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="name" v-model="user.name" class="form-control" required>
+        <input type="text" id="name" v-model="user.name" class="form-control">
       </div>
       <div class="form-group">
         <label for="second_name">Second Name:</label>
-        <input type="text" id="second_name" v-model="user.second_name" class="form-control" required>
+        <input type="text" id="second_name" v-model="user.second_name" class="form-control">
       </div>
       <div class="form-group">
         <label for="surname">Surname:</label>
-        <input type="text" id="surname" v-model="user.surname" class="form-control" required>
+        <input type="text" id="surname" v-model="user.surname" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" v-model="user.username" class="form-control">
       </div>
       <div class="form-group">
         <label for="position">Position:</label>
-        <input type="text" id="position" v-model="user.position" class="form-control" required>
+        <input type="text" id="position" v-model="user.position" class="form-control">
       </div>
       <div class="form-group">
         <label for="salary">Salary:</label>
-        <input type="number" id="salary" v-model="user.salary" class="form-control" required>
+        <input type="number" id="salary" v-model="user.salary" class="form-control">
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="user.password" class="form-control" required>
+        <input type="password" id="password" v-model="user.password" class="form-control">
       </div>
       <button type="submit" class="btn btn-primary">Update User</button>
     </form>
@@ -57,7 +61,8 @@ export default {
         surname: '',    
         position: '',   
         salary: 0,      
-        password: ''
+        password: '',
+        username: '',
       },
       error: null
     };
@@ -82,6 +87,7 @@ export default {
         const token = localStorage.getItem('token'); 
       try {
             const payload = {
+                        username: this.user.username,
                         second_name: this.user.second_name, // Ensure these fields exist in your user object
                         name: this.user.name,
                         surname: this.user.surname,
@@ -90,7 +96,7 @@ export default {
                         salary: this.user.salary,
                         password: this.user.password // Include if required
             };
-        await axios.put(`http://localhost:8000/payroll/users/`, payload, {
+        await axios.patch(`http://localhost:8000/payroll/users/`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
