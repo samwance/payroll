@@ -9,6 +9,7 @@ import MyInfo from '../components/MyInfo.vue';
 import EditUserInfo from '../components/EditUserInfo.vue';
 import AllTasks from '../components/AllTasks.vue';
 import CreateTask from '../components/CreateTask.vue';
+import Task from '../components/Task.vue';
 
 Vue.use(Router);
 
@@ -57,6 +58,11 @@ const routes = [
     path: '/tasks/create/',
     name: 'CreateTask',
     component: CreateTask
+  },
+  {
+    path: '/tasks/:taskId/',
+    name: 'Task',
+    component: Task
   },
 ];
 

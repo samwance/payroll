@@ -1,12 +1,11 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 from sqlalchemy import Boolean, DateTime, Integer, Numeric, String
 from sqlalchemy.sql import expression, func
 
 from models.base import Base
 
-if TYPE_CHECKING:
-    from models.task import Task
+from models.task import Task  # noqa: TCH001
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 

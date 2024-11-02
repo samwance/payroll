@@ -46,7 +46,9 @@ class Task(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    creator: Mapped["User"] = relationship("User", foreign_keys=[creator_id])
+    creator: Mapped["User"] = relationship(
+        "User", foreign_keys=[creator_id], back_populates="created_tasks"
+    )
     assignee: Mapped[Optional["User"]] = relationship(
-        "User", foreign_keys=[assignee_id]
+        "User", foreign_keys=[assignee_id], back_populates="assigned_tasks"
     )

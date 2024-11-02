@@ -1,8 +1,9 @@
 <template>
   <BaseTemplate>
-    <div class="container">
-      <h2>Create New User</h2>
-      <form v-if="currentUserIsAdmin" @submit.prevent="createUser">
+    <div class="container-user">
+      <button @click="goBack" class="btn btn-secondary">Go Back</button>
+      <h2 class="title">Create New User</h2>
+      <form v-if="currentUserIsAdmin" @submit.prevent="createUser" class="user-form">
         <div class="form-group" v-for="(field, index) in fields" :key="index">
           <label :for="field.id">{{ field.label }}:</label>
           <input
@@ -11,6 +12,8 @@
             v-model="userData[field.model]"
             :id="field.id"
             class="form-control"
+            :placeholder="field.label"
+            required
           />
           <select
             v-else
@@ -18,6 +21,7 @@
             :id="field.id"
             class="form-control"
           >
+            <option value="" disabled>Select {{ field.label }}</option>
             <option v-for="option in field.options" :key="option.value" :value="option.value">
               {{ option.text }}
             </option>
@@ -68,7 +72,7 @@ export default {
         { id: 'secondName', label: 'Second Name', model: 'second_name', type: 'text' },
         { id: 'surname', label: 'Surname', model: 'surname', type: 'text' },
         { id: 'phone', label: 'Phone', model: 'phone', type: 'text' },
-        { id: 'email', label: 'Email', model: 'email', type: 'text' },
+        { id: 'email', label: 'Email', model: 'email', type: 'email' },
         { id: 'position', label: 'Position', model: 'position', type: 'text' },
         { id: 'salary', label: 'Salary', model: 'salary', type: 'number', step: '0.01' },
       ],
@@ -137,16 +141,93 @@ export default {
       }
       this.successMessage = '';
     },
+    goBack() {
+      this.$router.go(-1);
+    },
   },
 };
 </script>
 
 <style scoped>
-.container {
+.container-user {
   max-width: 600px;
-  margin: auto;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
 }
-.spinner-border {
-  margin-left: 10px;
+
+.light .container-user {
+  background-color: #ffffff; /* Light background */
+  color: #333; /* Light text color */
+}
+
+.dark .container-user {
+  background-color: #495057; /* Dark background */
+  color: #f8f9fa; /* Dark text color */
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 </style>

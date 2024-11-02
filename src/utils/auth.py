@@ -70,7 +70,7 @@ async def authenticate_user(
 ) -> User:
     user = await crud_user.get_by_phone(db, phone)
     if not user:
-        return "Havent found user with this phone"
+        return "No user with this phone"
     if not verify_password(password, user.password):
         return "Wrong password"
     return user
@@ -81,7 +81,7 @@ async def authenticate_username(
 ) -> User:
     user = await crud_user.get_by_username(db, username)
     if not user:
-        return "Havent found user with this username"
+        return "No users with this username"
     if not verify_password(password, user.password):
         return "Wrong password"
     return user
