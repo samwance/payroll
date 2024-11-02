@@ -23,7 +23,11 @@ Before starting u should create virtual environment with ```poetry shell```
 after that install all requirements by: ```poetry install```
 
 - You can launch the app with:
-```./start.sh  ```
+```
+./start.sh
+```
+
+```./loopback_full``` *if some ports are unavailabe*
 
 This command will create .env file from .env.template and launch the app on the ports:
 - backend
@@ -35,7 +39,9 @@ This command will create .env file from .env.template and launch the app on the 
 ## Admin
 
 You can create superuser in the console:
-```python src/utils/csu.py```
+```
+python src/utils/csu.py
+```
 
 *if u have problems with imports*:
 paste ```export PYTHONPATH=src``` in your console
