@@ -33,14 +33,20 @@ Now u can launch the app with:
 ./start.sh
 ```
 
-```./loopback_full``` *if some ports are unavailabe*
-
 This command will create .env file from .env.template and launch the app on the ports:
 - backend
 ```http://0.0.0.0:8000/```
 
 - frontend
 ```http://localhost:8080/```
+
+
+```./loopback_full``` *if some ports are unavailabe*
+
+## Testing
+```
+pytest -x
+```
 
 ## Admin
 
